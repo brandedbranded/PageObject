@@ -1,10 +1,15 @@
 package pages;
 
-import static assertForTests.Steps.*;
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+import com.codeborne.selenide.SelenideElement;
 
-import com.codeborne.selenide.*;
+import static assertForTests.Asserts.verifyRedirectToHomePage;
+import static assertForTests.Asserts.verifyTextOnElement;
+import static assertForTests.Steps.hoverClick;
+import static assertForTests.Steps.sendKeysToInput;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.$x;
+import static common.Constants.WB_PAGE;
+import static pages.HomePage.visibleAddressOfChosenPoint;
 
 public class AddressPage {
 
@@ -35,6 +40,8 @@ public class AddressPage {
         String address = aboutPointAddress.shouldBe(visible, enabled).getText();
         builder.append(address);
         hoverClick(chooseAddressBtn);
+        verifyTextOnElement(address.toString(), visibleAddressOfChosenPoint);
+        verifyRedirectToHomePage(WB_PAGE);
         return this;
     }
 }

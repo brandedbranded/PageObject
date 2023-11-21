@@ -1,9 +1,12 @@
 package pages;
 
-import static assertForTests.Steps.*;
-import static com.codeborne.selenide.Selenide.*;
+import com.codeborne.selenide.SelenideElement;
 
-import com.codeborne.selenide.*;
+import static assertForTests.Asserts.*;
+import static assertForTests.Steps.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
+import static pages.BasketPage.*;
 
 // page_url = https://www.wildberries.ru/
 public class HomePage {
@@ -35,8 +38,12 @@ public class HomePage {
         return new FilterHomePage();
     }
 
-    public HomePage goToCart() {
+    public HomePage goToCart(String name, String price) {
         hoverClick(basketBtn);
+        verifyPriceOnElement(price, priceInsideBasket);
+        verifyEquality(name, getNameInBasket());
+        verifyPriceOnElement(price, sumPriceInBasket);
+        verifyClickable(orderBtn);
         return this;
     }
 }

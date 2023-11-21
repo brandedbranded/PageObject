@@ -1,11 +1,14 @@
 package pages;
 
-import static assertForTests.Steps.*;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+
+import static assertForTests.Asserts.verifyTextOnElement;
+import static assertForTests.Steps.hoverClick;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
+import static common.Constants.ITEM;
 import static pages.HomePage.*;
-
-import com.codeborne.selenide.*;
 
 public class ItemsAfterSearchPage {
 
@@ -41,11 +44,22 @@ public class ItemsAfterSearchPage {
     public ItemsAfterSearchPage chooseFirstVacuum() {
         firstVacuum.shouldBe(enabled, visible).hover();
         hoverClick(addToBasket);
+        verifyTextOnElement("Главная\n"
+                + "Бытовая техника\n"
+                + "Техника для дома\n"
+                + "Пылесосы и пароочистители", filterPath);
+        verifyTextOnElement("Пылесосы и пароочистители", catalogTitle);
+        verifyTextOnElement("1", counterAboveBasket);
         return this;
     }
 
     public ItemsAfterSearchPage clearSearchLineWithCross() {
         crossBtn.shouldBe(visible, interactable).hover().shouldBe(visible, interactable).click();
+        verifyTextOnElement(ITEM, titleAfterSearch);
+        verifyTextOnElement(ITEM, filterForItems);
+        verifyTextOnElement("По популярности", sortBtn);
+        verifyTextOnElement("Apple", brandOfFirstItem);
+        verifyTextOnElement("", searchLine);
         return new ItemsAfterSearchPage();
     }
 

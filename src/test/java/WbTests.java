@@ -1,14 +1,15 @@
-import static assertForTests.Asserts.*;
-import static assertForTests.Steps.*;
-import static common.Constants.*;
-import static pages.BasketPage.*;
-import static pages.FiltresAfterSearchPage.*;
-import static pages.HomePage.*;
-import static pages.ItemsAfterSearchPage.*;
-
-import common.*;
+import common.Config;
 import io.qameta.allure.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import static assertForTests.Asserts.verifyEquality;
+import static common.Constants.ITEM;
+import static org.junit.jupiter.api.Assertions.fail;
+import static pages.FiltresAfterSearchPage.*;
+import static pages.ItemsAfterSearchPage.getNameOfItem;
+import static pages.ItemsAfterSearchPage.getPriceOfItem;
 
 public class WbTests extends Config {
 
@@ -21,14 +22,8 @@ public class WbTests extends Config {
     @Description("Присутствует текст Iphone 13. Первый фильтр - iphone 13. Применен фильтр По популярности. У первого устройства из списка бренд - Apple.")
     public void searchForItemTest() {
         homePage
-            .searchItem(ITEM)
-            .clearSearchLineWithCross();
-
-        verifyTextOnElement(ITEM, titleAfterSearch);
-        verifyTextOnElement(ITEM, filterForItems);
-        verifyTextOnElement("По популярности", sortBtn);
-        verifyTextOnElement("Apple", brandOfFirstItem);
-        verifyTextOnElement("", searchLine);
+                .searchItem(ITEM)
+                .clearSearchLineWithCross();
     }
 
     @Feature("Смена города доставки")
@@ -40,14 +35,12 @@ public class WbTests extends Config {
     @Description("Адрес пункта выдачи совпадает с тем адресом, что был предложен в списке адресов. Отображается адрес пункта выдачи.")
     public void changeCityTest() {
         homePage
-            .openAddress()
-            .inputCityName("Санкт-петербург")
-            .openFirstAddress(address)
-            .chooseFirstAddress(address2);
+                .openAddress()
+                .inputCityName("Санкт-петербург")
+                .openFirstAddress(address)
+                .chooseFirstAddress(address2);
 
         verifyEquality(address.toString(), address2.toString());
-        verifyTextOnElement(address.toString(), visibleAddressOfChosenPoint);
-        verifyRedirectToHomePage(WB_PAGE);
     }
 
     @Feature("Добавление товара в корзину")
@@ -59,30 +52,17 @@ public class WbTests extends Config {
     @Description("Товар добавляется в корзину, счетчик изменяется")
     public void addItemToCart() {
         homePage
-            .openFilters()
-            .hoverHouseHold()
-            .chooseHomeAppliances()
-            .chooseVacuums()
-            .chooseFirstVacuum();
-
-        verifyTextOnElement("Главная\n"
-            + "Бытовая техника\n"
-            + "Техника для дома\n"
-            + "Пылесосы и пароочистители", filterPath);
-        verifyTextOnElement("Пылесосы и пароочистители", catalogTitle);
+                .openFilters()
+                .hoverHouseHold()
+                .chooseHomeAppliances()
+                .chooseVacuums()
+                .chooseFirstVacuum();
 
         String nameItem = getNameOfItem();
-        System.out.println("Вывод name item " + nameItem);
         String itemPrice = getPriceOfItem();
-        verifyTextOnElement("1", counterAboveBasket);
 
         homePage
-            .goToCart();
-
-        verifyPriceOnElement(itemPrice, priceInsideBasket);
-        verifyEquality(nameItem, getNameInBasket());
-        verifyPriceOnElement(itemPrice, sumPriceInBasket);
-        verifyClickable(orderBtn);
+                .goToCart(nameItem, itemPrice);
     }
 
     @Feature("Фильтрация товара")
@@ -94,22 +74,41 @@ public class WbTests extends Config {
     @Description("Фильтр активен, фильтр отображается на странице, есть кнопка Сбросить всё")
     public void useFiltres() {
         homePage
-            .openFilters()
-            .hoverElectronics()
-            .chooseLaptopsAndPC()
-            .chooseLaptops()
-            .openFilters()
-            .fillPriceFilter("100000", "149000")
-            .choose(lessThan3DaysBtn)
-            .choose(brandApple)
-            .choose(screen133)
-            .choose(showItemsWithFiltres);
+                .openFilters()
+                .hoverElectronics()
+                .chooseLaptopsAndPC()
+                .chooseLaptops()
+                .openFilters()
+                .fillPriceFilter("100000", "149000")
+                .choose(lessThan3DaysBtn)
+                .choose(brandApple)
+                .choose(screen133)
+                .choose(showItemsWithFiltres)
+                .verifyFilters();
+    }
 
-        verifyTextOnElement("Ноутбуки и ультрабуки", catalogTitle);
-        verifyTextOnElement("до 3 дней", listOfFiltres);
-        verifyTextOnElement("Apple", listOfFiltres);
-        verifyTextOnElement("13", listOfFiltres);
-        verifyTextOnElement("Сбросить все", listOfFiltres);
-        verifyQuantityOnPage();
+    @Disabled
+    @Feature("Падающий тест")
+    @Story("Падающий тест")
+    @Severity(SeverityLevel.NORMAL)
+    @Owner("Artyom G")
+    @Test
+    @DisplayName("Падающий тест")
+    @Description("Тест падает")
+    public void badTest() {
+        fail();
+    }
+
+    @Disabled
+    @Feature("Отключенный тест")
+    @Story("Отключенный тест")
+    @Severity(SeverityLevel.NORMAL)
+    @Owner("Artyom G")
+    @Test
+    @DisplayName("Отключенный тест")
+    @Description("Тест отключен")
+    public void disTest() {
+        homePage
+                .openFilters();
     }
 }
