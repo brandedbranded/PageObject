@@ -1,106 +1,69 @@
-import static assertForTests.Asserts.checkTextContainsOnPage;
-import static assertForTests.Asserts.verifyClickable;
-import static assertForTests.Asserts.verifyPriceOnElement;
-import static assertForTests.Asserts.verifyQuantityOnPage;
-import static assertForTests.Asserts.verifyRedirectToHomePage;
-import static assertForTests.Asserts.verifyTextOnElement;
-import static common.Constants.ITEM;
-import static common.Constants.WB_PAGE;
-import static pages.AddressPage.aboutPointAddress;
-import static pages.AddressPage.chooseAddressBtn;
-import static pages.AddressPage.getAddressFromList;
-import static pages.AddressPage.searchBoxInAddress;
-import static pages.BasketPage.orderBtn;
-import static pages.BasketPage.priceInsideBasket;
-import static pages.BasketPage.sumPriceInBasket;
-import static pages.FilterHomePage.electronicsBtn;
-import static pages.FilterHomePage.homeAppliancesBtn;
-import static pages.FilterHomePage.householdBtn;
-import static pages.FilterHomePage.laptops;
-import static pages.FilterHomePage.laptopsAndPc;
-import static pages.FilterHomePage.vacuums;
-import static pages.FiltresAfterSearchPage.brandApple;
-import static pages.FiltresAfterSearchPage.lessThan3DaysBtn;
-import static pages.FiltresAfterSearchPage.priceMax;
-import static pages.FiltresAfterSearchPage.priceMin;
-import static pages.FiltresAfterSearchPage.screen133;
-import static pages.FiltresAfterSearchPage.showItemsWithFiltres;
-import static pages.HomePage.addressBtn;
-import static pages.HomePage.basketBtn;
-import static pages.HomePage.counterAboveBasket;
-import static pages.HomePage.crossBtn;
-import static pages.HomePage.filterBtn;
-import static pages.HomePage.searchLine;
-import static pages.HomePage.visibleAddressOfChosenPoint;
-import static pages.ItemsAfterSearchPage.addToBasket;
-import static pages.ItemsAfterSearchPage.allFiltres;
-import static pages.ItemsAfterSearchPage.brandOfFirstItem;
-import static pages.ItemsAfterSearchPage.catalogTitle;
-import static pages.ItemsAfterSearchPage.filterForItems;
-import static pages.ItemsAfterSearchPage.filterPath;
-import static pages.ItemsAfterSearchPage.firstVacuum;
-import static pages.ItemsAfterSearchPage.getNameOfItem;
-import static pages.ItemsAfterSearchPage.getPriceOfItem;
-import static pages.ItemsAfterSearchPage.listOfFiltres;
-import static pages.ItemsAfterSearchPage.sortBtn;
-import static pages.ItemsAfterSearchPage.titleAfterSearch;
+import static assertForTests.Asserts.*;
+import static assertForTests.Steps.*;
+import static common.Constants.*;
+import static pages.BasketPage.*;
+import static pages.FiltresAfterSearchPage.*;
+import static pages.HomePage.*;
+import static pages.ItemsAfterSearchPage.*;
 
-import common.Config;
-import jdk.jfr.Description;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Keys;
+import common.*;
+import io.qameta.allure.*;
+import org.junit.jupiter.api.*;
 
 public class WbTests extends Config {
 
+    @Feature("Поиск товара")
+    @Story("Поиск iPhone 13 с помощью поисковой строки")
+    @Severity(SeverityLevel.MINOR)
+    @Owner("Artyom G")
     @Test
     @DisplayName("Работа с поисковой строкой")
     @Description("Присутствует текст Iphone 13. Первый фильтр - iphone 13. Применен фильтр По популярности. У первого устройства из списка бренд - Apple.")
     public void searchForItemTest() {
         homePage
-            .hoverClick(searchLine)
-            .sendKeysToInput(searchLine, ITEM + Keys.ENTER);
+            .searchItem(ITEM)
+            .clearSearchLineWithCross();
 
         verifyTextOnElement(ITEM, titleAfterSearch);
         verifyTextOnElement(ITEM, filterForItems);
         verifyTextOnElement("По популярности", sortBtn);
         verifyTextOnElement("Apple", brandOfFirstItem);
-
-        homePage.
-            hoverClick(crossBtn);
-
         verifyTextOnElement("", searchLine);
     }
 
+    @Feature("Смена города доставки")
+    @Story("Изменение адреса пункта выдачи для доставки товаров")
+    @Severity(SeverityLevel.MINOR)
+    @Owner("Artyom G")
     @Test
     @DisplayName("Смена города")
     @Description("Адрес пункта выдачи совпадает с тем адресом, что был предложен в списке адресов. Отображается адрес пункта выдачи.")
     public void changeCityTest() {
         homePage
-            .hoverClick(addressBtn);
-        addressPage
-            .sendKeysToInput(searchBoxInAddress, "Санкт-петербург" + Keys.ENTER);
+            .openAddress()
+            .inputCityName("Санкт-петербург")
+            .openFirstAddress(address)
+            .chooseFirstAddress(address2);
 
-        String address = getAddressFromList();
-        verifyTextOnElement(address, aboutPointAddress);
-
-        addressPage
-            .hoverClick(chooseAddressBtn);
-
-        verifyTextOnElement(address, visibleAddressOfChosenPoint);
+        verifyEquality(address.toString(), address2.toString());
+        verifyTextOnElement(address.toString(), visibleAddressOfChosenPoint);
         verifyRedirectToHomePage(WB_PAGE);
     }
 
+    @Feature("Добавление товара в корзину")
+    @Story("Добавление пылесоса, найденного с помощью фильтров на главной странице, в корзину")
+    @Severity(SeverityLevel.CRITICAL)
+    @Owner("Artyom G")
     @Test
-    @DisplayName("Добавление товара в избранное")
-    @Description("Товар добавляется в избранное, счетчик изменяется")
-    public void addItemToFavorite() {
+    @DisplayName("Добавление товара в корзину")
+    @Description("Товар добавляется в корзину, счетчик изменяется")
+    public void addItemToCart() {
         homePage
-            .hoverClick(filterBtn);
-        filterHomePage
-            .hover(householdBtn)
-            .click(homeAppliancesBtn)
-            .hoverClick(vacuums);
+            .openFilters()
+            .hoverHouseHold()
+            .chooseHomeAppliances()
+            .chooseVacuums()
+            .chooseFirstVacuum();
 
         verifyTextOnElement("Главная\n"
             + "Бытовая техника\n"
@@ -108,45 +71,41 @@ public class WbTests extends Config {
             + "Пылесосы и пароочистители", filterPath);
         verifyTextOnElement("Пылесосы и пароочистители", catalogTitle);
 
-        itemsAfterSearchPage
-            .hover(firstVacuum)
-            .hoverClick(addToBasket);
-
         String nameItem = getNameOfItem();
+        System.out.println("Вывод name item " + nameItem);
         String itemPrice = getPriceOfItem();
         verifyTextOnElement("1", counterAboveBasket);
 
         homePage
-            .hoverClick(basketBtn);
+            .goToCart();
 
         verifyPriceOnElement(itemPrice, priceInsideBasket);
-        checkTextContainsOnPage(nameItem);
+        verifyEquality(nameItem, getNameInBasket());
         verifyPriceOnElement(itemPrice, sumPriceInBasket);
         verifyClickable(orderBtn);
     }
 
+    @Feature("Фильтрация товара")
+    @Story("Применение фильтров на результат поиска")
+    @Severity(SeverityLevel.NORMAL)
+    @Owner("Artyom G")
     @Test
     @DisplayName("Работа с фильтрами")
     @Description("Фильтр активен, фильтр отображается на странице, есть кнопка Сбросить всё")
     public void useFiltres() {
         homePage
-            .hoverClick(filterBtn);
-        filterHomePage
-            .hover(electronicsBtn)
-            .click(laptopsAndPc)
-            .hoverClick(laptops);
+            .openFilters()
+            .hoverElectronics()
+            .chooseLaptopsAndPC()
+            .chooseLaptops()
+            .openFilters()
+            .fillPriceFilter("100000", "149000")
+            .choose(lessThan3DaysBtn)
+            .choose(brandApple)
+            .choose(screen133)
+            .choose(showItemsWithFiltres);
 
         verifyTextOnElement("Ноутбуки и ультрабуки", catalogTitle);
-
-        filtresAfterSearchPage
-            .hoverClick(allFiltres)
-            .sendKeysToInput(priceMin, "100000")
-            .sendKeysToInput(priceMax, "149000")
-            .hoverClick(lessThan3DaysBtn)
-            .hoverClick(brandApple)
-            .hoverClick(screen133)
-            .hoverClick(showItemsWithFiltres);
-
         verifyTextOnElement("до 3 дней", listOfFiltres);
         verifyTextOnElement("Apple", listOfFiltres);
         verifyTextOnElement("13", listOfFiltres);

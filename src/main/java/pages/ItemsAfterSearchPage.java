@@ -1,16 +1,11 @@
 package pages;
 
-import static com.codeborne.selenide.Condition.editable;
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.interactable;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.$x;
+import static assertForTests.Steps.*;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
+import static pages.HomePage.*;
 
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 
 public class ItemsAfterSearchPage {
 
@@ -34,32 +29,28 @@ public class ItemsAfterSearchPage {
     public static SelenideElement brandOfFirstItem = $x(
         "(//span[@class='product-card__brand'])[1]");
 
-    public ItemsAfterSearchPage hoverClick(SelenideElement element) {
-        element.shouldBe(visible, interactable).hover().shouldBe(visible, interactable).click();
-        return this;
-    }
-
     public static String getNameOfItem() {
-        return nameOfItem.shouldBe(visible, exist).getText().substring(2);
+        return nameOfItem.shouldBe(visible, exist).getText().replace("/", "").replace(" ", "");
     }
 
     public static String getPriceOfItem() {
         return priceOfItem.shouldBe(visible, exist).getText();
     }
 
-    public ItemsAfterSearchPage sendKeysToInput(SelenideElement element, String query){
-        element.shouldBe(visible, enabled).clear();
-        element.shouldBe(visible, enabled, editable).sendKeys(query);
+
+    public ItemsAfterSearchPage chooseFirstVacuum() {
+        firstVacuum.shouldBe(enabled, visible).hover();
+        hoverClick(addToBasket);
         return this;
     }
 
-    public ItemsAfterSearchPage hover(SelenideElement element) {
-        element.shouldBe(visible, interactable).hover();
-        return this;
+    public ItemsAfterSearchPage clearSearchLineWithCross() {
+        crossBtn.shouldBe(visible, interactable).hover().shouldBe(visible, interactable).click();
+        return new ItemsAfterSearchPage();
     }
 
-    public ItemsAfterSearchPage click(SelenideElement element) {
-        element.shouldBe(visible, interactable).click();
-        return this;
+    public FiltresAfterSearchPage openFilters() {
+        hoverClick(allFiltres);
+        return new FiltresAfterSearchPage();
     }
 }

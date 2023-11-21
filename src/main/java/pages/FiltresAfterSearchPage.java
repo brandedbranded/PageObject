@@ -1,12 +1,9 @@
 package pages;
 
-import static com.codeborne.selenide.Condition.editable;
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.interactable;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
 
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 
 public class FiltresAfterSearchPage {
     public static SelenideElement priceMin = $x("(//input[@class='j-price'])[1]");
@@ -17,14 +14,23 @@ public class FiltresAfterSearchPage {
     public static SelenideElement showItemsWithFiltres = $x(
         "//button[@class='filters-desktop__btn-main btn-main']");
 
-    public FiltresAfterSearchPage hoverClick(SelenideElement element) {
+    public FiltresAfterSearchPage choose(SelenideElement element) {
         element.shouldBe(visible, interactable).hover().shouldBe(visible, interactable).click();
         return this;
     }
 
-    public FiltresAfterSearchPage sendKeysToInput(SelenideElement element, String query){
+    public FiltresAfterSearchPage sendKeysToInput(SelenideElement element, String query) {
         element.shouldBe(visible, enabled).clear();
-        element.shouldBe(visible, enabled, editable).sendKeys(query);
+        element.shouldBe(visible, enabled, editable, empty).sendKeys(query);
+        return this;
+    }
+
+    public FiltresAfterSearchPage fillPriceFilter(String minPrice, String maxPrice) {
+        priceMin.shouldBe(visible, enabled).clear();
+        priceMax.shouldBe(visible, enabled).clear();
+        priceMax.shouldBe(visible, enabled).clear();
+        priceMin.shouldBe(visible, enabled, editable, empty).sendKeys(minPrice);
+        priceMax.shouldBe(visible, enabled, editable, empty).sendKeys(maxPrice);
         return this;
     }
 }

@@ -1,17 +1,12 @@
 package assertForTests;
 
-import static com.codeborne.selenide.CollectionCondition.size;
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.interactable;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$x;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static pages.ItemsAfterSearchPage.amountOfItemsOnPage;
-import static pages.ItemsAfterSearchPage.expectedAmountOfItems;
+import static com.codeborne.selenide.CollectionCondition.*;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selenide.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static pages.ItemsAfterSearchPage.*;
 
-import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.*;
 
 public class Asserts {
 
@@ -37,7 +32,11 @@ public class Asserts {
         element.shouldBe(interactable);
     }
 
-    public static void verifyQuantityOnPage(){
+    public static void verifyQuantityOnPage() {
         amountOfItemsOnPage.shouldHave(size(Integer.parseInt(expectedAmountOfItems.getText())));
+    }
+
+    public static void verifyEquality(String s, String s1) {
+        assertEquals(s, s1);
     }
 }

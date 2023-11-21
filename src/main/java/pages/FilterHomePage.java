@@ -1,14 +1,10 @@
 package pages;
 
-import static com.codeborne.selenide.Condition.editable;
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.interactable;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
+import static assertForTests.Steps.*;
+import static com.codeborne.selenide.Selenide.*;
 
-import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.By;
+import com.codeborne.selenide.*;
+import org.openqa.selenium.*;
 
 public class FilterHomePage {
 
@@ -21,24 +17,33 @@ public class FilterHomePage {
         "//span[contains(text(), 'Техника для дома')]");
     public static SelenideElement vacuums = $(By.linkText("Пылесосы и пароочистители"));
 
-    public FilterHomePage hoverClick(SelenideElement element) {
-        element.shouldBe(visible, interactable).hover().shouldBe(visible, interactable).click();
-        return this;
+    public FilterHomePage hoverHouseHold() {
+        hover(householdBtn);
+        return new FilterHomePage();
     }
 
-    public FilterHomePage hover(SelenideElement element) {
-        element.shouldBe(visible, interactable).hover();
-        return this;
+    public FilterHomePage chooseHomeAppliances() {
+        hoverClick(homeAppliancesBtn);
+        return new FilterHomePage();
     }
 
-    public FilterHomePage click(SelenideElement element) {
-        element.shouldBe(visible, interactable).click();
-        return this;
+    public ItemsAfterSearchPage chooseVacuums() {
+        hoverClick(vacuums);
+        return new ItemsAfterSearchPage();
     }
 
-    public FilterHomePage sendKeysToInput(SelenideElement element, String query) {
-        element.shouldBe(visible, enabled).clear();
-        element.shouldBe(visible, enabled, editable).sendKeys(query);
-        return this;
+    public FilterHomePage hoverElectronics() {
+        hover(electronicsBtn);
+        return new FilterHomePage();
+    }
+
+    public FilterHomePage chooseLaptopsAndPC() {
+        hoverClick(laptopsAndPc);
+        return new FilterHomePage();
+    }
+
+    public ItemsAfterSearchPage chooseLaptops() {
+        hoverClick(laptops);
+        return new ItemsAfterSearchPage();
     }
 }
