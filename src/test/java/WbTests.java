@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import static assertForTests.Asserts.verifyEquality;
 import static common.Constants.ITEM;
-import static org.junit.jupiter.api.Assertions.fail;
 import static pages.FiltresAfterSearchPage.*;
 import static pages.ItemsAfterSearchPage.getNameOfItem;
 import static pages.ItemsAfterSearchPage.getPriceOfItem;
@@ -87,7 +86,6 @@ public class WbTests extends Config {
                 .verifyFilters();
     }
 
-    @Disabled
     @Feature("Падающий тест")
     @Story("Падающий тест")
     @Severity(SeverityLevel.NORMAL)
@@ -96,7 +94,10 @@ public class WbTests extends Config {
     @DisplayName("Падающий тест")
     @Description("Тест падает")
     public void badTest() {
-        fail();
+        homePage
+                .openFilters()
+                .hoverElectronics()
+                .chooseLaptops();
     }
 
     @Disabled

@@ -2,9 +2,11 @@ package common;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.qameta.allure.Attachment;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import pages.HomePage;
@@ -34,30 +36,21 @@ public class Config {
     }
 
     @BeforeEach
-    public void browser() {
-        browserType();
-    }
-
-    @Attachment(value = "Дата запуска теста", type = "text/html")
-    public String dateOfTest() {
-        return LocalDate.now().toString();
-    }
-
-    @BeforeEach
-    public void date() {
-        dateOfTest();
-    }
-
-    @Attachment(value = "Браузер, на котором проходил тест", type = "text/html")
-    public String browserType() {
-        return "chrome.browser";
-    }
-
-    @BeforeEach
     @Step("Запуск браузера")
     public void init() {
+        Allure.addAttachment("Дата запуска", getDate());
+        Allure.addAttachment("Браузер", getBrowser());
         setUp();
         openBrowser("https://www.wildberries.ru/");
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(true));
+    }
+
+    public String getDate() {
+        return String.valueOf(LocalDate.now());
+    }
+
+    public String getBrowser() {
+        return "chrome.browser";
     }
 
     @AfterEach
