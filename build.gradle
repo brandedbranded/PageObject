@@ -11,14 +11,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-
     implementation 'commons-codec:commons-codec:1.16.0'
     implementation 'org.assertj:assertj-core:3.24.2'
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
-    implementation 'javax.activation:activation:1.1'
-    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
     implementation platform('org.junit:junit-bom:5.9.1')
     implementation 'org.junit.jupiter:junit-jupiter'
     implementation 'javax.validation:validation-api:2.0.1.Final'
@@ -29,6 +23,10 @@ dependencies {
     implementation 'io.qameta.allure:allure-junit5:2.24.0'
     implementation 'io.qameta.allure:allure-commandline:2.21.0'
     implementation 'io.qameta.allure:allure-selenide:2.24.0'
+    implementation 'io.cucumber:cucumber-java:7.14.0'
+    implementation 'io.cucumber:cucumber-picocontainer:7.11.2'
+    implementation 'io.cucumber:cucumber-junit:7.13.0'
+    implementation 'io.cucumber:cucumber-bom:7.14.0'
 
     runtimeOnly 'org.aspectj:aspectjweaver:1.9.20.1'
 }

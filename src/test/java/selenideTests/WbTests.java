@@ -1,14 +1,14 @@
-import common.Config;
-import io.qameta.allure.*;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+package selenideTests;
 
-import static assertForTests.Asserts.verifyEquality;
-import static common.Constants.ITEM;
+import common.*;
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.*;
+import org.junit.*;
+
+import static assertForTests.Asserts.*;
+import static common.Constants.*;
 import static pages.FiltresAfterSearchPage.*;
-import static pages.ItemsAfterSearchPage.getNameOfItem;
-import static pages.ItemsAfterSearchPage.getPriceOfItem;
+import static pages.ItemsAfterSearchPage.*;
 
 public class WbTests extends Config {
 
@@ -84,32 +84,5 @@ public class WbTests extends Config {
                 .choose(screen133)
                 .choose(showItemsWithFiltres)
                 .verifyFilters();
-    }
-
-    @Feature("Падающий тест")
-    @Story("Падающий тест")
-    @Severity(SeverityLevel.NORMAL)
-    @Owner("Artyom G")
-    @Test
-    @DisplayName("Падающий тест")
-    @Description("Тест падает")
-    public void badTest() {
-        homePage
-                .openFilters()
-                .hoverElectronics()
-                .chooseLaptops();
-    }
-
-    @Disabled
-    @Feature("Отключенный тест")
-    @Story("Отключенный тест")
-    @Severity(SeverityLevel.NORMAL)
-    @Owner("Artyom G")
-    @Test
-    @DisplayName("Отключенный тест")
-    @Description("Тест отключен")
-    public void disTest() {
-        homePage
-                .openFilters();
     }
 }
