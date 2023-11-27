@@ -45,6 +45,7 @@ public class AddToCartSteps {
     }
 
     @And("Нажимаем на появившийся текст справа с третьей категорией: {string}")
+    @And("Нажимаем на категорию {string}")
     public void clickThirdCateg(String arg0) {
         SelenideElement element = $x("//a[contains(text(), '" + arg0 + "')]");
         categories.add(arg0);
