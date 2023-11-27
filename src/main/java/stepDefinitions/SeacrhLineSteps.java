@@ -1,16 +1,22 @@
-package stepdefinitions;
+package stepDefinitions;
 
-import io.cucumber.java.en.*;
-import pages.*;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import pages.HomePage;
 
-import static assertForTests.Asserts.*;
-import static com.codeborne.selenide.Condition.*;
-import static pages.HomePage.*;
+import static assertForTests.Asserts.textContainsOnPage;
+import static assertForTests.Asserts.verifyTextOnElement;
+import static com.codeborne.selenide.Condition.interactable;
+import static com.codeborne.selenide.Condition.visible;
+import static pages.HomePage.crossBtn;
+import static pages.HomePage.searchLine;
 import static pages.ItemsAfterSearchPage.*;
 
-public class SearchLineSteps {
+public class SeacrhLineSteps {
+
     @When("Нажимаем на поисковую строку")
-    public void clickOnSearchline() {
+    public void clickSearchLine() {
         searchLine.shouldBe(visible).click();
     }
 
@@ -26,7 +32,7 @@ public class SearchLineSteps {
 
     @Then("На странице присутствует текст {string}")
     public void pageContainsText(String arg0) {
-        verifyTextOnElement(arg0, titleAfterSearch);
+        textContainsOnPage(arg0);
     }
 
     @And("Первый фильтр содержит текст {string}")

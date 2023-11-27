@@ -1,18 +1,22 @@
 package common;
 
-import com.codeborne.selenide.*;
-import com.codeborne.selenide.logevents.*;
-import io.cucumber.java.en.*;
-import io.github.bonigarcia.wdm.*;
-import io.qameta.allure.*;
-import io.qameta.allure.selenide.*;
-import org.junit.jupiter.api.*;
-import pages.*;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import pages.HomePage;
 
-import java.time.*;
+import java.time.LocalDate;
 
 import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class Config {
 
@@ -53,48 +57,9 @@ public class Config {
     }
 
     @AfterEach
+    @And("Закрываем браузер")
     @Step("Закрытие браузера")
     public void tearDown() {
         Selenide.closeWebDriver();
     }
-
-    /*@When("Нажимаем на поисковую строку")
-    public void нажимаемНаПоисковуюСтроку() {
-        searchLine.shouldBe(visible).click();
-    }
-
-    @And("Вводим {string} в поисковую строку, нажимаем ENTER")
-    public void sendKeysToSearchline(String arg0) {
-        new HomePage().searchItem(arg0);
-    }
-
-    @And("Нажимаем кнопку крестика на поисковой строке")
-    public void clearSearchline() {
-        crossBtn.shouldBe(visible, interactable).hover().shouldBe(visible, interactable).click();
-    }
-
-    @Then("На странице присутствует текст {string}")
-    public void pageContainsText(String arg0) {
-        verifyTextOnElement(arg0, titleAfterSearch);
-    }
-
-    @And("Первый фильтр содержит текст {string}")
-    public void firstFilterContainsText(String arg0) {
-        verifyTextOnElement(arg0, filterForItems);
-    }
-
-    @And("Выдача товаров отсортирована {string}")
-    public void sortingType(String arg0) {
-        verifyTextOnElement(arg0, sortBtn);
-    }
-
-    @And("У первого товара бренд {string}")
-    public void brandOfFirstItem(String arg0) {
-        verifyTextOnElement(arg0, brandOfFirstItem);
-    }
-
-    @And("Строка поиска стала пустой")
-    public void searchlineIfClear() {
-        verifyTextOnElement("", searchLine);
-    }*/
 }

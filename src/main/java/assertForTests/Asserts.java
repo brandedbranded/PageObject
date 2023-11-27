@@ -44,4 +44,9 @@ public class Asserts {
     public static void verifyEquality(String s, String s1) {
         assertEquals(s, s1);
     }
+
+    public static void textContainsOnPage(String expectedText) {
+        SelenideElement body = $x("//body");
+        assertTrue(body.getText().contains(expectedText));
+    }
 }
